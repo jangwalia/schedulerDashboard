@@ -4,7 +4,7 @@
 
 const asyncHandler = require("express-async-handler");
 const brycpt = require("bcryptjs");
-
+const generateToken = require("../helper/generateToken");
 const User = require("../models/userModel");
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -39,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: newUser.name,
       email: newUser.email,
       timestamp: newUser.timestamp,
+      token: generateToken(newUser._id),
     });
   } else {
     res.status(400);
@@ -62,6 +63,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       timestamp: user.timestamp,
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
