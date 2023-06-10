@@ -50,7 +50,23 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access: Public
 // route: /api/users/login
 const loginUser = asyncHandler(async (req, res) => {
-  res.send("User logged in");
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("Please fill all the fields");
+  }
+  const user = await User.findOne({ email });
+  if (user && (await brycpt.compare(password, user.password))) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      timestamp: user.timestamp,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid email or password");
+  }
 });
 
 module.exports = {
