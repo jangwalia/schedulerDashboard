@@ -71,7 +71,21 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc: Controller for showing user
+// @access: Private
+// route: /api/users/user
+
+const showUser = asyncHandler(async (req, res) => {
+  const authUser = {
+    id: req.user.id,
+    email: req.user.email,
+    name: req.user.name,
+  };
+  res.status(200).json(authUser);
+});
+
 module.exports = {
   registerUser,
   loginUser,
+  showUser,
 };
